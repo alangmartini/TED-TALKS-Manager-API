@@ -88,12 +88,13 @@ const validateRate = (req, res, next) => {
 
 const validateRateQuery = (req, res, next) => {
   const { rate } = req.query;
-
+  console.log('rate is', rate);
   if (!rate) {
     return next();
   }
   
-  if (rate < 1 || rate > 5 || !Number.isInteger(rate)) {
+  if (Number(rate) < 1 || Number(rate) > 5 || !Number.isInteger(Number(rate))) {
+    console.log('im here');
     return res.status(400).json(TALK_ERRORS.invalidRate);      
   }
 
