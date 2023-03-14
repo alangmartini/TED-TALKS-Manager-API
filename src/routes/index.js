@@ -3,5 +3,5 @@ const loginRouter = require('./loginRouter');
 
 module.exports = {
   talkerRouter,
-  loginRouter
+  loginRouter,
 };
