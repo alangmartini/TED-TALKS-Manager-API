@@ -71,6 +71,22 @@ const validateWatchedAt = (req, res, next) => {
   next();
 };
 
+const validateWatchedAtQuery = (req, res, next) => {
+  const { date } = req.query;
+
+  if (!date) {
+    return next();     
+  }
+
+  if (!isValidDate(date.replaceAll('"', ''))) {
+    return res
+      .status(400)
+      .json({ message: 'O parâmetro "date" deve ter o formato "dd/mm/aaaa"' });      
+  }
+
+  next();
+};
+
 const validateRate = (req, res, next) => {
   const talkObject = req.body;
   const { talk } = talkObject;
@@ -116,6 +132,7 @@ module.exports = {
   validateName,
   validateAge,
   validateWatchedAt,
+  validateWatchedAtQuery,
   validateRate,
   validateRateQuery,
   validateTalkObject,

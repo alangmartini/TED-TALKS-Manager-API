@@ -7,6 +7,7 @@ const {
   validateName,
   validateAge,
   validateWatchedAt,
+  validateWatchedAtQuery,
   validateRate,
   validateRateQuery,
   validateTalkObject,
@@ -34,6 +35,7 @@ talkerRouter.get(
   '/search',
   validateAutorization,
   validateRateQuery,
+  validateWatchedAtQuery,
   async (req, res) => {
     const { q, rate, date } = req.query;
     const currentTalkers = await readFile(itensPath);
@@ -41,7 +43,7 @@ talkerRouter.get(
     const filters = {
       searchTerm: q,
       rate,
-      date,
+      date: date.replaceAll('"', ''),
     };
 
     const filteredTalkers = applyFilter(filters, currentTalkers);
