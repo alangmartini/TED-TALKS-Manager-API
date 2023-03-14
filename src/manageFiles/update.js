@@ -1,12 +1,12 @@
 const writeFile = require('./write');
 const readFile = require('./read');
 
-const updateFile = async (path, newObject) => {
+const addToFile = async (path, newObject) => {
   try {
     const currentFile = await readFile(path);
 
     const latestId = Number(currentFile[currentFile.length - 1].id);
-
+    
     const newItem = { id: latestId + 1, ...newObject };
 
     const newFile = [...currentFile, newItem];
@@ -20,4 +20,27 @@ const updateFile = async (path, newObject) => {
   }
 };
 
-module.exports = updateFile;
+const updateFile = async (path, newObject, id) => {
+  try {
+    const currentFile = await readFile(path);
+
+    const indexToUpdate = currentFile.findIndex((prop) => prop.id === Number(id));
+    if (indexToUpdate === -1) {
+      return false;
+    }
+
+    currentFile[indexToUpdate] = { ...newObject, id: Number(id) };
+    
+    await writeFile(path, currentFile);
+
+    return currentFile[indexToUpdate];
+  } catch (e) {
+    console.error(e);
+    return e;
+  }
+};
+
+module.exports = {
+  addToFile,
+  updateFile,
+};
