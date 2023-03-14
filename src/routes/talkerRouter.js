@@ -1,16 +1,24 @@
 const express = require('express');
 const path = require('path');
+
+// Validations
 const { validateAutorization } = require('../middlewares/validateAutorization');
 const {
   validateName,
   validateAge,
   validateWatchedAt,
   validateRate,
+  validateRateQuery,
   validateTalkObject,
 } = require('../middlewares/validateTalkObject');
+
+// Files management
 const { updateFile, addToFile } = require('../manageFiles/update');
 const readFile = require('../manageFiles/read');
 const deleteFromFile = require('../manageFiles/delete');
+
+// Utils
+const applyFilter = require('../utils/applyFilter');
 
 const talkerRouter = express.Router();
 
@@ -25,14 +33,18 @@ talkerRouter.get('/', async (req, res) => {
 talkerRouter.get(
   '/search',
   validateAutorization,
+  validateRateQuery,
   async (req, res) => {
-    const { q } = req.query;
+    const { q, rate, date } = req.query;
     const currentTalkers = await readFile(itensPath);
 
-    const regex = new RegExp(q);
-    const filteredTalkers = currentTalkers
-      .filter((talker) => regex.test(talker.name));
+    const filters = {
+      searchTerm: q,
+      rate,
+      date,
+    };
 
+    const filteredTalkers = applyFilter(filters, currentTalkers);
     return res.status(200).json(filteredTalkers);
   },
 );

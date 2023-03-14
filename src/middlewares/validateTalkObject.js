@@ -86,6 +86,20 @@ const validateRate = (req, res, next) => {
   next();
 };
 
+const validateRateQuery = (req, res, next) => {
+  const { rate } = req.query;
+
+  if (!rate) {
+    return next();
+  }
+  
+  if (rate < 1 || rate > 5 || !Number.isInteger(rate)) {
+    return res.status(400).json(TALK_ERRORS.invalidRate);      
+  }
+
+  return next();
+};
+
 const validateTalkObject = async (req, res, next) => {
   const talkObject = req.body;
   const { talk } = talkObject;
@@ -102,5 +116,6 @@ module.exports = {
   validateAge,
   validateWatchedAt,
   validateRate,
+  validateRateQuery,
   validateTalkObject,
 };

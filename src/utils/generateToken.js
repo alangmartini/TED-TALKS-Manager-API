@@ -6,5 +6,4 @@ function generateToken() {
   return token;
 }
 
-console.log(generateToken());
 module.exports = generateToken;
