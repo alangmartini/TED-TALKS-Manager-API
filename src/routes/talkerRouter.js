@@ -22,6 +22,9 @@ const deleteFromFile = require('../manageFiles/delete');
 // Utils
 const applyFilter = require('../utils/applyFilter');
 
+// Db
+const { getTalkers } = require('../db/query');
+
 const talkerRouter = express.Router();
 
 const itensPath = path.join(__dirname, '../talker.json');
@@ -30,6 +33,12 @@ talkerRouter.get('/', async (req, res) => {
   const content = await readFile(itensPath);
 
   res.status(200).json(content);
+});
+
+talkerRouter.get('/db', async (req, res) => {
+  const talkers = await getTalkers();
+
+  return res.status(200).json(talkers);
 });
 
 talkerRouter.get(

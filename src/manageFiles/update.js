@@ -56,7 +56,7 @@ const updateRateOnFile = async (path, newRate, id) => {
 
     return currentFile[indexToUpdate];
   } catch (e) {
-    return { type: 'ERROR_ON_WRITE_OR_READ', message: e};
+    return { type: 'ERROR_ON_WRITE_OR_READ', message: e };
   }
 };
 
