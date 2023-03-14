@@ -1,6 +1,15 @@
 const express = require('express');
 const path = require('path');
-const { readFile } = require('../manageFiles');
+const { validateAutorization } = require('../middlewares/validateAutorization');
+const {
+  validateName,
+  validateAge,
+  validateWatchedAt,
+  validateRate,
+  validateTalkObject,
+} = require('../middlewares/validateTalkObject');
+const updateFile = require('../manageFiles/update');
+const readFile = require('../manageFiles/read');
 
 const talkerRouter = express.Router();
 
@@ -30,5 +39,28 @@ talkerRouter.get('/:id', async (req, res) => {
 
   res.status(200).json(talkerObj);
 });
+
+// req 5
+// Validations
+talkerRouter.post(
+  '/',
+  validateAutorization,
+  validateName,
+  validateAge,
+  validateTalkObject,
+  validateWatchedAt,
+  validateRate,
+  async (req, res) => {
+    const talkObject = req.body;
+    
+    try {
+      const newTalkObject = await updateFile(itensPath, talkObject);
+
+      return res.status(201).json(newTalkObject);
+    } catch (e) {
+      return res.status(400).json({ message: 'Deu ruim ' });
+    }
+},
+);
 
 module.exports = talkerRouter;
