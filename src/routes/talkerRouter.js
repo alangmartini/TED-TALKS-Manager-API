@@ -10,11 +10,12 @@ const {
   validateWatchedAtQuery,
   validateRate,
   validateRateQuery,
+  validateRateBody,
   validateTalkObject,
 } = require('../middlewares/validateTalkObject');
 
 // Files management
-const { updateFile, addToFile } = require('../manageFiles/update');
+const { updateFile, addToFile, updateRateOnFile } = require('../manageFiles/update');
 const readFile = require('../manageFiles/read');
 const deleteFromFile = require('../manageFiles/delete');
 
@@ -126,6 +127,29 @@ talkerRouter.delete(
     await deleteFromFile(itensPath, id);
 
     return res.status(204).json({});
+  },
+);
+
+talkerRouter.patch(
+  '/rate/:id',
+  validateAutorization,
+  validateRateBody,
+  async (req, res) => {
+    const { id } = req.params;
+    const { rate } = req.body;
+
+    try {
+      const error = await updateRateOnFile(itensPath, rate, id);
+
+      if (error.type) {
+        console.error(error.type, error.message);
+        throw new Error();
+      }
+
+      return res.status(204).json({});
+    } catch (e) {
+      return res.status(400).json({ message: 'Something went pretty badly' });
+    }
   },
 );
 

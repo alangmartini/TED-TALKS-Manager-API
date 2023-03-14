@@ -40,7 +40,28 @@ const updateFile = async (path, newObject, id) => {
   }
 };
 
+const updateRateOnFile = async (path, newRate, id) => {
+  try {
+    const currentFile = await readFile(path);
+
+    const indexToUpdate = currentFile.findIndex((prop) => prop.id === Number(id));
+
+    if (indexToUpdate === -1) {
+      return false;
+    }
+
+    currentFile[indexToUpdate].talk.rate = newRate;
+    
+    await writeFile(path, currentFile);
+
+    return currentFile[indexToUpdate];
+  } catch (e) {
+    return { type: 'ERROR_ON_WRITE_OR_READ', message: e};
+  }
+};
+
 module.exports = {
   addToFile,
   updateFile,
+  updateRateOnFile,
 };

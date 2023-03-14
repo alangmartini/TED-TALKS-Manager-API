@@ -20,10 +20,7 @@ const applyRateFilter = (filtersObject, filterType, arrayToFilter) => {
 const applyDateFilter = (filtersObject, filterType, arrayToFilter) => {
   if (filterType === 'date' && filtersObject.date) {
     return arrayToFilter
-      .filter((talker) => {
-        console.log('filters', talker.talk.watchedAt)
-        return talker.talk.watchedAt === filtersObject.date;
-      });
+      .filter((talker) => talker.talk.watchedAt === filtersObject.date);
   }
 
   return arrayToFilter;
