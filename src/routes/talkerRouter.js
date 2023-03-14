@@ -10,6 +10,7 @@ const {
 } = require('../middlewares/validateTalkObject');
 const { updateFile, addToFile } = require('../manageFiles/update');
 const readFile = require('../manageFiles/read');
+const deleteFromFile = require('../manageFiles/delete');
 
 const talkerRouter = express.Router();
 
@@ -86,6 +87,17 @@ talkerRouter.put(
     } catch (e) {
       return res.status(400).json({ message: 'Deu ruim ' });
     }
+  },
+);
+
+talkerRouter.delete(
+  '/:id',
+  validateAutorization,
+  async (req, res) => {
+    const { id } = req.params;
+    await deleteFromFile(itensPath, id);
+
+    return res.status(204).json({});
   },
 );
 
