@@ -53,7 +53,7 @@ talkerRouter.get(
     const filters = {
       searchTerm: q,
       rate,
-      date: date.replaceAll('"', ''),
+      date,
     };
 
     const filteredTalkers = applyFilter(filters, currentTalkers);

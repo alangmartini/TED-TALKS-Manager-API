@@ -19,8 +19,9 @@ const applyRateFilter = (filtersObject, filterType, arrayToFilter) => {
 
 const applyDateFilter = (filtersObject, filterType, arrayToFilter) => {
   if (filterType === 'date' && filtersObject.date) {
+    const date = filtersObject.date.replace('"', '');
     return arrayToFilter
-      .filter((talker) => talker.talk.watchedAt === filtersObject.date);
+      .filter((talker) => talker.talk.watchedAt === date);
   }
 
   return arrayToFilter;
