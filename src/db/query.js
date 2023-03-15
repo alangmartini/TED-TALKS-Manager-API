@@ -13,13 +13,11 @@ const getTalkers = async () => {
 
     delete newTalker.talk_rate;
     delete newTalker.talk_watched_at;
-    
+
     return newTalker;
   });
   return camelized;
 };
-
-getTalkers();
 
 module.exports = {
   getTalkers,
